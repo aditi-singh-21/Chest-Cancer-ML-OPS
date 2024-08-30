@@ -14,7 +14,10 @@ import base64
 def read_yaml(path_to_yaml : Path) -> ConfigBox:
     print("path",path_to_yaml)
     try:
+<<<<<<< HEAD
        
+=======
+>>>>>>> 18ca0b9ecb9a9457094809a3e4e51599aa70bc84
         with open (path_to_yaml) as yaml_file:
             content = yaml.safe_load(yaml_file)
             logger.info(f"YAML file {path_to_yaml} successfully loaded")
