@@ -1,6 +1,8 @@
 from chest_cancer_classifier.constants import *
 from chest_cancer_classifier.utils.common import read_yaml,create_dir
 from chest_cancer_classifier.entity.config_entity import DataIngestionConfig
+from chest_cancer_classifier.entity.config_entity import PrepareBaseModelConfig
+from pathlib import Path
 
 class ConfigManager:
     def __init__(
@@ -26,3 +28,19 @@ class ConfigManager:
         )
         
         return data_ingestion_config
+    
+    def prepare_base_model(self) -> PrepareBaseModelConfig:
+        config = self.config.prepare_base_model
+        create_dir([config.root_dir])
+        
+        prepare_base_model_config = PrepareBaseModelConfig(
+            root_dir= Path(config.root_dir),
+            base_model_path = Path(config.base_model_path),
+            updated_base_model_path = Path(config.updated_base_model_path),
+            image_size_params = self.params.IMAGE_SIZE,
+            learning_rate_params=self.params.LEARNING_RATE,
+            include_top_params=self.params.INCLUDE_TOP,
+            weights_params=self.params.WEIGHTS,
+            classes_params=self.params.CLASSES 
+        )
+        return prepare_base_model_config
