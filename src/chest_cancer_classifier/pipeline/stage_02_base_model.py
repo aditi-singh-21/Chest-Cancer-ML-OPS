@@ -2,7 +2,7 @@ from chest_cancer_classifier.config.configuration import ConfigManager
 from chest_cancer_classifier.components.prepare_base_model import PrepareBaseModel
 from chest_cancer_classifier import logger
 
-STAGE_NAME = "Data Ingestion Stage"
+STAGE_NAME = "BASE MODEL Stage"
 
 class PrepareBaseModelStage():
     def __init__(self):
