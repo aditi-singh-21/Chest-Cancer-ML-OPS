@@ -1,6 +1,6 @@
 from chest_cancer_classifier.constants import *
 from chest_cancer_classifier.utils.common import read_yaml,create_dir
-from chest_cancer_classifier.entity.config_entity import DataIngestionConfig
+from chest_cancer_classifier.entity.config_entity import DataIngestionConfig,EvaluationConfig
 from chest_cancer_classifier.entity.config_entity import PrepareBaseModelConfig,TrainModelConfig
 from pathlib import Path
 import os
@@ -65,3 +65,14 @@ class ConfigManager:
           
         )
         return training_config
+    
+    def get_evaluation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model=r"C:\Users\aditi\OneDrive\Desktop\Chest-Cancer-ML-OPS\artifacts\training\model.h5",
+            training_data=r"C:\Users\aditi\OneDrive\Desktop\Chest-Cancer-ML-OPS\artifacts\data_ingestion\Data\test",
+            mlflow_url="https://dagshub.com/aditi-singh-21/Chest-Cancer-ML-OPS.mlflow/#/",
+            all_params= self.params,
+            image_size_params=self.params.IMAGE_SIZE,
+            batch_size_params=self.params.BATCH_SIZE
+        )
+        return eval_config
