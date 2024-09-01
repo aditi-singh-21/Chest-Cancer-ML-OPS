@@ -33,7 +33,7 @@ Key features of this project include:
 
 The repository is organized as follows:
 
-
+```plaintext
 Chest-Cancer-Classification-MLflow/
 │
 ├── .github/workflows/               # GitHub Actions for CI/CD (if configured)
@@ -53,7 +53,7 @@ Chest-Cancer-Classification-MLflow/
 ├── scores.json                      # Evaluation metrics
 ├── setup.py                         # Script to package the project
 └── template.py                      # Python script template (if needed)
-
+```
 
 
 ## Setup Instructions
