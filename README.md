@@ -30,9 +30,30 @@ Key features of this project include:
 
 
 ## Directory Structure
+
 The repository is organized as follows:
 
-Chest-Cancer-Classification-MLflow/ │ ├── .github/workflows/ # GitHub Actions for CI/CD (if configured) ├── config/ # Configuration files for model training ├── research/ # Jupyter notebooks and research scripts ├── src/chest_cancer_classifier/ # Source code for the chest cancer classifier ├── templates/ # HTML templates for the frontend │ ├── .gitignore # Ignore specific files in git ├── LICENSE # Project license ├── README.md # This file ├── app.py # Flask application for predictions ├── inputImage.jpg # Example input image for predictions ├── main.py # Main script for running the web server ├── params.yaml # Model hyperparameters and configuration ├── requirements.txt # Project dependencies ├── scores.json # Evaluation metrics ├── setup.py # Script to package the project └── template.py
+
+Chest-Cancer-Classification-MLflow/
+│
+├── .github/workflows/               # GitHub Actions for CI/CD (if configured)
+├── config/                          # Configuration files for model training
+├── research/                        # Jupyter notebooks and research scripts
+├── src/chest_cancer_classifier/     # Source code for the chest cancer classifier
+├── templates/                       # HTML templates for the frontend
+│
+├── .gitignore                       # Ignore specific files in git
+├── LICENSE                          # Project license
+├── README.md                        # This file
+├── app.py                           # Flask application for predictions
+├── inputImage.jpg                   # Example input image for predictions
+├── main.py                          # Main script for running the web server
+├── params.yaml                      # Model hyperparameters and configuration
+├── requirements.txt                 # Project dependencies
+├── scores.json                      # Evaluation metrics
+├── setup.py                         # Script to package the project
+└── template.py                      # Python script template (if needed)
+
 
 
 ## Setup Instructions
