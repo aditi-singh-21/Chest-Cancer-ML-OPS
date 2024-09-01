@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chest Cancer Classification</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f7f7f7;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h3 {
+            color: #555;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .image-part {
+            height: 300px;
+            width: 300px;
+            margin: 0 auto;
+            position: relative;
+            border: 2px solid #ddd;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+        }
+        .image-part video,
+        .image-part img {
+            height: 100%;
+            width: 100%;
+            display: none;
+            border-radius: 15px;
+        }
+        #video {
+            display: block;
+        }
+        .btn {
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .btn-part {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .right-part {
+            border: 2px solid #ddd;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .right-part h5 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #555;
+        }
+        .res-part,
+        .res-part2 {
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+            height: 310px;
+            overflow-y: auto;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        #loading {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999999999;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #333;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .logo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" style="display:none;">
+        <div class="loader"></div>
+    </div>
+
+    <div class="container">
+        <section class="iupload">
+            <h3>Chest Cancer Classification</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="image-part">
+                        <video autoplay id="video" poster="https://img.freepik.com/free-vector/group-young-people-posing-photo_52683-18824.jpg?size=338&ext=jpg"></video>
+                        <img src="" id="photo">
+                        <canvas style="display:none;" id="canvas"></canvas>
+                    </div>
+                    <div class="btn-part mt-3">
+                        <button type="button" class="btn btn-primary" id="uload">Upload</button>
+                        <button type="button" class="btn btn-success" id="send">Predict</button>
+                    </div>
+                    <input name="upload" type="file" id="fileinput" style="display:none;">
+                    <input type="hidden" id="url" value="../predict"/>
+                </div>
+                <div class="col-md-6 right-part">
+                    <h5>Prediction Results</h5>
+                    <div class="row">
+                        <div class="col-md-6 res-part2"></div>
+                        <div class="col-md-6 res-part">
+                            <div class="jsonRes"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Example_logo.svg/1200px-Example_logo.svg.png" alt="Logo">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script>
+        var video = document.getElementById('video');
+        var canvas = document.getElementById('canvas');
+        var photo = document.getElementById('photo');
+
+        document.getElementById('uload').onclick = function() {
+            document.getElementById('fileinput').click();
+        };
+
+        document.getElementById('fileinput').onchange = function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    var ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    var dataURL = canvas.toDataURL('image/jpeg');
+                    photo.setAttribute('src', dataURL);
+                    photo.style.display = 'block';
+                    video.style.display = 'none';
+                };
+            };
+            reader.readAsDataURL(file);
+        };
+
+        document.getElementById('send').onclick = function() {
+            var url = document.getElementById('url').value;
+            var imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
+            $("#loading").show();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ image: imageBase64 }),
+                success: function(response) {
+                    $("#loading").hide();
+                    $('.jsonRes').text(JSON.stringify(response));
+                },
+                error: function() {
+                    $("#loading").hide();
+                    alert('Error occurred while predicting');
+                }
+            });
+        };
+    </script>
+</body>
+</html>
